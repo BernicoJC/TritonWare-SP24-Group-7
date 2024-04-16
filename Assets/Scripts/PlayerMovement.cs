@@ -6,10 +6,10 @@ public class PlayerMovement : MonoBehaviour
 {
     private float horizontal;
     private float vertical;
-    private float speed = 4f;
-    private float jumpingPower = 16f;
+    private float speed = 10f;
+    private float jumpingPower = 30f;
     private float fastFallSpeed = 10f;
-    private float dodgeStrength = 20f;
+    private float dodgeStrength = 50f;
     private float dodgingTime = 0.05f;
 
     private bool isFacingRight = true;
@@ -49,9 +49,10 @@ public class PlayerMovement : MonoBehaviour
         
 
         // getbuttondown --> check if button is held (basically full hop)
-        if(Input.GetButtonDown("Jump") && isGrounded())
+        if(Input.GetButtonDown("Jump")) //  && isGrounded()
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + jumpingPower);
+            canDodge = true;
             
             //if(!aud.isPlaying)
             //{
@@ -63,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            canDodge = true;
         }
 
         // Fast fall
@@ -89,7 +91,16 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        /*
+        if(isGrounded() && isDodging)
+        {
+            rb.velocity = new Vector2(0f, 0f);
+            isDodging = false;
+        }
+        */
+
         // changing its velocity every update to x = the input * the base speed, y = current y
+        /*
         if(horizontal != 0){ // So can keep momentum, don't change velocity if no new input
             rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
 
@@ -105,6 +116,10 @@ public class PlayerMovement : MonoBehaviour
             // rb.MovePosition(position);
 
         }
+        */
+
+        // Read movement input
+        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
 
     }
 
@@ -138,17 +153,24 @@ public class PlayerMovement : MonoBehaviour
 
         float dH = horizontal * dodgeStrength;
         float dV = vertical * dodgeStrength;
+
+        // Prevents airdodging up
+        if(dV > 0)
+        {
+            dV = 0;
+        }
         
         // I'm guessing use localScale here because want fixed speed
         rb.velocity = new Vector2(dH, dV);
 
         yield return new WaitForSeconds(dodgingTime);
     
-        if(!isGrounded())
-        {
-            rb.velocity = new Vector2(0, 0);
-            yield return new WaitForSeconds(0.3f);
-        }
+        // Smash Bros airdodge mechanic
+        //if(!isGrounded())
+        //{
+        //    rb.velocity = new Vector2(0, 0);
+        //    yield return new WaitForSeconds(0.3f);
+        //}
 
         rb.gravityScale = oldGravity;
 

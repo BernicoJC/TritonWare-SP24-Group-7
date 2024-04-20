@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // If grounded, reset the canDodge variable
-        if(isGrounded())
+        if (isGrounded())
         {
             canDodge = true;
             // isDodging is put down there instead of here; since if it touch ground and this gets disabled, then other controls got reactivated

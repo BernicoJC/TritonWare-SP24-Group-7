@@ -7,8 +7,8 @@ public class PlayerMovement : MonoBehaviour
     private float horizontal;
     private float vertical;
     private float speed = 10f;
-    private float jumpingPower = 30f;
-    private float fastFallSpeed = 10f;
+    private float jumpingPower = 10f;
+    // private float fastFallSpeed = 10f;
     private float dodgeStrength = 50f;
     private float dodgingTime = 0.05f;
 
@@ -46,8 +46,10 @@ public class PlayerMovement : MonoBehaviour
 
         horizontal = Input.GetAxisRaw("Horizontal"); // getting from input
         vertical = Input.GetAxisRaw("Vertical");
-        
 
+
+        // OLD JUMP Mechanic (Maybe still want to use this?)
+        /*
         // getbuttondown --> check if button is held (basically full hop)
         if(Input.GetButtonDown("Jump")) //  && isGrounded()
         {
@@ -66,15 +68,25 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             canDodge = true;
         }
+        */
+
+        // New Jump mechanic (No short hop / long hop)
+        if (Input.GetButtonDown("Jump")) //  && isGrounded()
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            canDodge = true;
+        }
 
         // Fast fall
+        /*
         if(vertical < 0 && !isGrounded())
         {
             rb.velocity = new Vector2(rb.velocity.x, -fastFallSpeed);
         }
+        */
 
         // Air Dodge
-        if(Input.GetKeyDown(KeyCode.LeftShift) && !isGrounded() && canDodge)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isGrounded() && canDodge)
         {
             StartCoroutine(airDodge());
         }
@@ -123,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private bool isGrounded()
+    public bool isGrounded()
     {
         // return if groundCheck.position overlap within 0.2f radius to groundLayer
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);

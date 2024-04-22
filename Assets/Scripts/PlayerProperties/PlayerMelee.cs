@@ -6,10 +6,12 @@ public class PlayerMelee : MonoBehaviour
 {
     public float attackTime = 0.05f;
     public float attackCooldown = 0.5f;
-    [SerializeField] private Rigidbody2D rb;
-    
 
-    private GameObject attackArea = default;
+
+    private GameObject attackAreaF = default;
+    private GameObject attackAreaD = default;
+    private GameObject attackAreaU = default;
+
     private bool attacking = false;
 
     private float timeToAttack;
@@ -19,16 +21,36 @@ public class PlayerMelee : MonoBehaviour
     void Start()
     {
         timeToAttack = attackTime; // setup
-        attackArea = transform.GetChild(1).gameObject; // getting the hitbox child of this object; MAKE SURE TO PUT THE HITBOX IN THE 1ST SPOT (starting from 0)
-        //attackArea.transform.localPosition = new Vector2(0f, 0f);
+        attackAreaF = transform.GetChild(1).gameObject; // getting the hitbox child of this object; MAKE SURE TO PUT THE HITBOX IN THE 1ST SPOT (starting from 0)
+        attackAreaD = transform.GetChild(2).gameObject; // Down hitbox must be 2nd
+        attackAreaU = transform.GetChild(3).gameObject; // Up hitbox must be 3rd
+
+        attackAreaF.transform.localPosition = new Vector3(1.33f, 0, 0);
+        attackAreaD.transform.localPosition = new Vector3(0, -1.33f, 0);
+        attackAreaU.transform.localPosition = new Vector3(0, 1.33f, 0);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.X) && !attacking)
+        // Up attack
+        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") > 0)
         {
-            Attack();
+            AttackU();
+            
+        }
+
+        // Down attack
+        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") < 0 && !gameObject.GetComponent<PlayerMovement>().isGrounded())
+        {
+            AttackD();
+        }
+
+        // Forward attack
+        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") == 0)
+        {
+            AttackF();
         }
 
         if(attacking)
@@ -36,7 +58,9 @@ public class PlayerMelee : MonoBehaviour
             timer += Time.deltaTime; // timer that goes up per frame(?) basically
             if(timer >= timeToAttack) // if that timer already goes above the timeToAttack, reset everything
             {
-                attackArea.SetActive(false); // Disable hitbox
+                attackAreaF.SetActive(false); // Disable hitbox
+                attackAreaD.SetActive(false);
+                attackAreaU.SetActive(false);
             }
             if(timer >= timeToAttack + attackCooldown) // Allow to attack again
             {
@@ -46,10 +70,24 @@ public class PlayerMelee : MonoBehaviour
         }
     }
 
-    private void Attack()
+    private void AttackF()
     {
         attacking = true;
-        attackArea.SetActive(true);
+        attackAreaF.SetActive(true);
         
+    }
+
+    private void AttackD()
+    {
+        attacking = true;
+        attackAreaD.SetActive(true);
+
+    }
+
+    private void AttackU()
+    {
+        attacking = true;
+        attackAreaU.SetActive(true);
+
     }
 }

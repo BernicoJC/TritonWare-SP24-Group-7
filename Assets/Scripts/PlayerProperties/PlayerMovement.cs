@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
     private float vertical;
     private float speed = 10f;
     private float jumpingPower = 10f;
-    // private float fastFallSpeed = 10f;
     private float dodgeStrength = 50f;
     private float dodgingTime = 0.05f;
 
@@ -77,14 +76,6 @@ public class PlayerMovement : MonoBehaviour
             canDodge = true;
         }
 
-        // Fast fall
-        /*
-        if(vertical < 0 && !isGrounded())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, -fastFallSpeed);
-        }
-        */
-
         // Air Dodge
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isGrounded() && canDodge)
         {
@@ -102,33 +93,6 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
-
-        /*
-        if(isGrounded() && isDodging)
-        {
-            rb.velocity = new Vector2(0f, 0f);
-            isDodging = false;
-        }
-        */
-
-        // changing its velocity every update to x = the input * the base speed, y = current y
-        /*
-        if(horizontal != 0){ // So can keep momentum, don't change velocity if no new input
-            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-
-            // Vector2 position = rb.position;
-            // Vector2 move = new Vector2(horizontal, rb.velocity.y);
-
-            // if(rb.velocity.y < 0)
-            // {
-            //     rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - regularFallSpeed);
-            // }
-            
-            // position = position + move * speed * Time.fixedDeltaTime;
-            // rb.MovePosition(position);
-
-        }
-        */
 
         // Read movement input
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
@@ -176,13 +140,6 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(dH, dV);
 
         yield return new WaitForSeconds(dodgingTime);
-    
-        // Smash Bros airdodge mechanic
-        //if(!isGrounded())
-        //{
-        //    rb.velocity = new Vector2(0, 0);
-        //    yield return new WaitForSeconds(0.3f);
-        //}
 
         rb.gravityScale = oldGravity;
 

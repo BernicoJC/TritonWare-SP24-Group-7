@@ -6,8 +6,15 @@ using UnityEngine;
 public class MonsterDamage : MonoBehaviour
 {
     public int contactDamage;
-    public Health playerHealth; // It seems using class in this way is importing from other script (just like Java)
+    private GameObject player;
+    private Health playerHealth; // It seems using class in this way is importing from other script (just like Java)
     public bool kamikaze;
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerHealth = player.GetComponent<Health>();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class FlyMovement : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     public float speed;
     public float distanceToActivate;
 
     private float distance;
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
     // Update is called once per frame
     void Update()
     {

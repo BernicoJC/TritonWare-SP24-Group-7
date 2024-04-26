@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2752072092781024211}
   - component: {fileID: 7141620524499608675}
   - component: {fileID: 6879879841298303604}
+  - component: {fileID: 196483600440094037}
   m_Layer: 8
   m_Name: FlyEnemy
   m_TagString: Enemy
@@ -208,3 +209,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resilienceModifier: 1
   rb: {fileID: 8098358451268546303}
+--- !u!114 &196483600440094037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119969643874360968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39363ff57c49c1c49961fa9855506a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

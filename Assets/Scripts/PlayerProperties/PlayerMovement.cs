@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private float sprintSpeed = 20f;
     private float jumpingPower = 30f;
     private float fastFallSpeed = 60f;
-    private float softFallSpeed = 10f;
+    private float softFallSpeed = 5f;
     private float dodgeStrength = 50f;
     private float dodgingTime = 0.05f;
 

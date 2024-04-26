@@ -13,7 +13,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isFacingRight = true;
     private bool canDodge = true;
-    private bool isDodging = false;
+    public bool cantMove = false;
+    public float gravity;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         // aud = GetComponent<AudioSource>();
+        gravity = rb.gravityScale;
     }
 
     // Update is called once per frame
@@ -33,12 +35,10 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded())
         {
             canDodge = true;
-            // isDodging is put down there instead of here; since if it touch ground and this gets disabled, then other controls got reactivated
-            // isDodging = false;
         }
 
         // if currently dodging, don't allow controls
-        if(isDodging)
+        if(cantMove)
         {
             return;
         }
@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // if currently dodging, don't allow controls
-        if(isDodging)
+        if(cantMove)
         {
             return;
         }
@@ -123,8 +123,7 @@ public class PlayerMovement : MonoBehaviour
     {
         canDodge = false;
         // This variable is important so that you can't move while dodging
-        isDodging = true;
-        float oldGravity = rb.gravityScale;
+        cantMove = true;
         rb.gravityScale = 0f;
 
         float dH = horizontal * dodgeStrength;
@@ -141,9 +140,8 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(dodgingTime);
 
-        rb.gravityScale = oldGravity;
+        rb.gravityScale = gravity;
 
-        // isDodging is put here instead of when touching ground; since if it touch ground and this gets disabled, then other controls got reactivated
-        isDodging = false;
+        cantMove = false;
     }
 }

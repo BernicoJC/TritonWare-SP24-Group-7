@@ -7,14 +7,14 @@ public class PlayerMovement : MonoBehaviour
     private float horizontal;
     private float vertical;
     private float speed = 10f;
-    private float jumpingPower = 30f;
-    private float fastFallSpeed = 10f;
+    private float jumpingPower = 10f;
     private float dodgeStrength = 50f;
     private float dodgingTime = 0.05f;
 
     private bool isFacingRight = true;
     private bool canDodge = true;
-    private bool isDodging = false;
+    public bool cantMove = false;
+    public float gravity;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -25,29 +25,30 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         // aud = GetComponent<AudioSource>();
+        gravity = rb.gravityScale;
     }
 
     // Update is called once per frame
     void Update()
     {
         // If grounded, reset the canDodge variable
-        if(isGrounded())
+        if (isGrounded())
         {
             canDodge = true;
-            // isDodging is put down there instead of here; since if it touch ground and this gets disabled, then other controls got reactivated
-            // isDodging = false;
         }
 
         // if currently dodging, don't allow controls
-        if(isDodging)
+        if(cantMove)
         {
             return;
         }
 
         horizontal = Input.GetAxisRaw("Horizontal"); // getting from input
         vertical = Input.GetAxisRaw("Vertical");
-        
 
+
+        // OLD JUMP Mechanic (Maybe still want to use this?)
+        /*
         // getbuttondown --> check if button is held (basically full hop)
         if(Input.GetButtonDown("Jump")) //  && isGrounded()
         {
@@ -66,15 +67,17 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             canDodge = true;
         }
+        */
 
-        // Fast fall
-        if(vertical < 0 && !isGrounded())
+        // New Jump mechanic (No short hop / long hop)
+        if (Input.GetButtonDown("Jump")) //  && isGrounded()
         {
-            rb.velocity = new Vector2(rb.velocity.x, -fastFallSpeed);
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            canDodge = true;
         }
 
         // Air Dodge
-        if(Input.GetKeyDown(KeyCode.LeftShift) && !isGrounded() && canDodge)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isGrounded() && canDodge)
         {
             StartCoroutine(airDodge());
         }
@@ -86,44 +89,17 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // if currently dodging, don't allow controls
-        if(isDodging)
+        if(cantMove)
         {
             return;
         }
-
-        /*
-        if(isGrounded() && isDodging)
-        {
-            rb.velocity = new Vector2(0f, 0f);
-            isDodging = false;
-        }
-        */
-
-        // changing its velocity every update to x = the input * the base speed, y = current y
-        /*
-        if(horizontal != 0){ // So can keep momentum, don't change velocity if no new input
-            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-
-            // Vector2 position = rb.position;
-            // Vector2 move = new Vector2(horizontal, rb.velocity.y);
-
-            // if(rb.velocity.y < 0)
-            // {
-            //     rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - regularFallSpeed);
-            // }
-            
-            // position = position + move * speed * Time.fixedDeltaTime;
-            // rb.MovePosition(position);
-
-        }
-        */
 
         // Read movement input
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
 
     }
 
-    private bool isGrounded()
+    public bool isGrounded()
     {
         // return if groundCheck.position overlap within 0.2f radius to groundLayer
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
@@ -147,8 +123,7 @@ public class PlayerMovement : MonoBehaviour
     {
         canDodge = false;
         // This variable is important so that you can't move while dodging
-        isDodging = true;
-        float oldGravity = rb.gravityScale;
+        cantMove = true;
         rb.gravityScale = 0f;
 
         float dH = horizontal * dodgeStrength;
@@ -164,17 +139,9 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(dH, dV);
 
         yield return new WaitForSeconds(dodgingTime);
-    
-        // Smash Bros airdodge mechanic
-        //if(!isGrounded())
-        //{
-        //    rb.velocity = new Vector2(0, 0);
-        //    yield return new WaitForSeconds(0.3f);
-        //}
 
-        rb.gravityScale = oldGravity;
+        rb.gravityScale = gravity;
 
-        // isDodging is put here instead of when touching ground; since if it touch ground and this gets disabled, then other controls got reactivated
-        isDodging = false;
+        cantMove = false;
     }
 }

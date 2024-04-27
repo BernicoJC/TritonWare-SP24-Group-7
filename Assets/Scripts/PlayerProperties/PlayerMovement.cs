@@ -8,17 +8,22 @@ public class PlayerMovement : MonoBehaviour
     private float vertical;
     private float baseSpeed = 10f;
     private float speed = 10f;
+    
     private float sprintSpeed = 20f;
     private float jumpingPower = 30f;
     private float fastFallSpeed = 60f;
     private float softFallSpeed = 5f;
+    
     private float dodgeStrength = 50f;
     private float dodgingTime = 0.05f;
 
     private bool isFacingRight = true;
     private bool canDodge = true;
-    private bool isDodging = false;
+    
     private bool isSprinting = false;
+ 
+    public bool cantMove = false;
+    public float gravity;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -29,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         // aud = GetComponent<AudioSource>();
+        gravity = rb.gravityScale;
     }
 
     // Update is called once per frame
@@ -39,12 +45,10 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded())
         {
             canDodge = true;
-            // isDodging is put down there instead of here; since if it touch ground and this gets disabled, then other controls got reactivated
-            // isDodging = false;
         }
 
         // if currently dodging, don't allow controls
-        if (isDodging)
+        if(cantMove)
         {
             return;
         }
@@ -53,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
         vertical = Input.GetAxisRaw("Vertical");
 
 
+        // OLD JUMP Mechanic (Maybe still want to use this?)
+        /*
         // getbuttondown --> check if button is held (basically full hop)
         if (Input.GetButtonDown("Vertical")) //  && isGrounded()
         {
@@ -71,11 +77,19 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             canDodge = true;
         }
-
+        */
+        
         // Fast fall
         if (vertical < 0 && !isGrounded())
         {
             rb.velocity = new Vector2(rb.velocity.x, -fastFallSpeed);
+        }
+        
+        // New Jump mechanic (No short hop / long hop)
+        if (Input.GetButtonDown("Jump")) //  && isGrounded()
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            canDodge = true;
         }
 
         // Air Dodge
@@ -111,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // if currently dodging, don't allow controls
-        if (isDodging)
+        if(cantMove)
         {
             return;
         }
@@ -151,13 +165,12 @@ public class PlayerMovement : MonoBehaviour
         {
             speed = baseSpeed;
         }
-
         // Read movement input
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
 
     }
 
-    private bool isGrounded()
+    public bool isGrounded()
     {
         // return if groundCheck.position overlap within 0.2f radius to groundLayer
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
@@ -181,8 +194,7 @@ public class PlayerMovement : MonoBehaviour
     {
         canDodge = false;
         // This variable is important so that you can't move while dodging
-        isDodging = true;
-        float oldGravity = rb.gravityScale;
+        cantMove = true;
         rb.gravityScale = 0f;
 
         float dH = horizontal * dodgeStrength;
@@ -198,17 +210,8 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(dH, dV);
 
         yield return new WaitForSeconds(dodgingTime);
+        rb.gravityScale = gravity;
 
-        // Smash Bros airdodge mechanic
-        //if(!isGrounded())
-        //{
-        //    rb.velocity = new Vector2(0, 0);
-        //    yield return new WaitForSeconds(0.3f);
-        //}
-
-        rb.gravityScale = oldGravity;
-
-        // isDodging is put here instead of when touching ground; since if it touch ground and this gets disabled, then other controls got reactivated
-        isDodging = false;
+        cantMove = false;
     }
 }

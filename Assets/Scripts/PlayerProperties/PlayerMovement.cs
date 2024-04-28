@@ -6,22 +6,13 @@ public class PlayerMovement : MonoBehaviour
 {
     private float horizontal;
     private float vertical;
-    private float baseSpeed = 10f;
     private float speed = 10f;
-    
-    private float sprintSpeed = 20f;
-    private float jumpingPower = 30f;
-    private float fastFallSpeed = 60f;
-    private float softFallSpeed = 5f;
-    
+    private float jumpingPower = 10f;
     private float dodgeStrength = 50f;
     private float dodgingTime = 0.05f;
 
     private bool isFacingRight = true;
     private bool canDodge = true;
-    
-    private bool isSprinting = false;
- 
     public bool cantMove = false;
     public float gravity;
 
@@ -40,7 +31,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         // If grounded, reset the canDodge variable
         if (isGrounded())
         {
@@ -60,11 +50,11 @@ public class PlayerMovement : MonoBehaviour
         // OLD JUMP Mechanic (Maybe still want to use this?)
         /*
         // getbuttondown --> check if button is held (basically full hop)
-        if (Input.GetButtonDown("Vertical")) //  && isGrounded()
+        if(Input.GetButtonDown("Jump")) //  && isGrounded()
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + jumpingPower);
             canDodge = true;
-
+            
             //if(!aud.isPlaying)
             //{
             //    aud.Play();
@@ -72,19 +62,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // getbuttonup --> check for button is tapped (short hop), basically if only tap, the above one got halfed
-        if (Input.GetButtonUp("Vertical") && rb.velocity.y > 0f)
+        if(Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             canDodge = true;
         }
         */
-        
-        // Fast fall
-        if (vertical < 0 && !isGrounded())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, -fastFallSpeed);
-        }
-        
+
         // New Jump mechanic (No short hop / long hop)
         if (Input.GetButtonDown("Jump")) //  && isGrounded()
         {
@@ -96,26 +80,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isGrounded() && canDodge)
         {
             StartCoroutine(airDodge());
-        }
-
-        // Sprint
-        if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded() && !isSprinting)
-        {
-            isSprinting = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift) && isGrounded() && isSprinting)
-        {
-            isSprinting = false;
-        }
-        else if (!isGrounded() || isDodging) //change to if x direction changed
-        {
-            isSprinting = false;
-        }
-
-        // Soft fall
-        if (!isGrounded() && rb.velocity.y < -10 && Input.GetAxisRaw("Vertical") > 0)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, -softFallSpeed);
         }
 
         // Check if need to flip every frame
@@ -130,41 +94,6 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        /*
-        if(isGrounded() && isDodging)
-        {
-            rb.velocity = new Vector2(0f, 0f);
-            isDodging = false;
-        }
-        */
-
-        // changing its velocity every update to x = the input * the base speed, y = current y
-        /*
-        if(horizontal != 0){ // So can keep momentum, don't change velocity if no new input
-            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-
-            // Vector2 position = rb.position;
-            // Vector2 move = new Vector2(horizontal, rb.velocity.y);
-
-            // if(rb.velocity.y < 0)
-            // {
-            //     rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - regularFallSpeed);
-            // }
-            
-            // position = position + move * speed * Time.fixedDeltaTime;
-            // rb.MovePosition(position);
-
-        }
-        */
-
-        if (isSprinting)
-        {
-            speed = sprintSpeed;
-        }
-        else
-        {
-            speed = baseSpeed;
-        }
         // Read movement input
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
 
@@ -179,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
     private void Flip()
     {
         // If facing right and input to left, flip (vise versa)
-        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        if(isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
         {
             isFacingRight = !isFacingRight;
 
@@ -201,15 +130,16 @@ public class PlayerMovement : MonoBehaviour
         float dV = vertical * dodgeStrength;
 
         // Prevents airdodging up
-        if (dV > 0)
+        if(dV > 0)
         {
             dV = 0;
         }
-
+        
         // I'm guessing use localScale here because want fixed speed
         rb.velocity = new Vector2(dH, dV);
 
         yield return new WaitForSeconds(dodgingTime);
+
         rb.gravityScale = gravity;
 
         cantMove = false;

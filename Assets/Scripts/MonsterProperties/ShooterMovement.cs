@@ -18,6 +18,8 @@ public class ShooterMovement : MonoBehaviour
 
     private float timer = 0;
 
+    public Animator animator;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -37,16 +39,19 @@ public class ShooterMovement : MonoBehaviour
                 shoot();
                 timer = 0;
                 shooting = false;
+                animator.SetBool("Detected", false);
             }
         }
 
         if (shooting == false && distance < distanceToActivate) // detect a player
         {
+            animator.SetBool("Detected", true);
             shooting = true;
         }
 
         if (shooting == false && distance >= distanceToActivate) // detect a player
         {
+            animator.SetBool("Detected", false);
             timer = 0;
         }
     }

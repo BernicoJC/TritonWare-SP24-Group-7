@@ -58,6 +58,6 @@ public class ShooterMovement : MonoBehaviour
 
     void shoot()
     {
-        Instantiate(bullet, bulletPos.position, Quaternion.identity);
+        Instantiate(bullet, bulletPos.position, Quaternion.identity, this.transform);
     }
 }

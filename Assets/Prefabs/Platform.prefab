@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4613567509811695603}
   - component: {fileID: 6442530842782489379}
   - component: {fileID: 1659074300190933453}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Platform
   m_TagString: Platform
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 139
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1

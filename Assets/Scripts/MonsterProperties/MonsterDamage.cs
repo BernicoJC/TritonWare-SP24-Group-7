@@ -27,7 +27,7 @@ public class MonsterDamage : MonoBehaviour
 
             if(kamikaze)
             {
-                Destroy(gameObject);
+                this.GetComponent<Death>().kill();
             }
         }
     }

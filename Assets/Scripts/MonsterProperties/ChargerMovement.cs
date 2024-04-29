@@ -11,6 +11,8 @@ public class ChargerMovement : MonoBehaviour
     public float pauseTime;
     public float extraRechargeTime;
 
+    public Animator animator;
+
     private GameObject player;
     private float distance;
     private bool charging = false;
@@ -50,10 +52,12 @@ public class ChargerMovement : MonoBehaviour
         if (charging == false && distance < distanceToActivate) // detect a player
         {
             charging = true;
+            animator.SetBool("Detected", true);
         }
 
         if (charging == false && distance >= distanceToActivate) // detect a player
         {
+            animator.SetBool("Detected", false);
             timer = 0;
         }
     }

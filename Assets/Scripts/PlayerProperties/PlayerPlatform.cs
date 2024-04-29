@@ -6,7 +6,7 @@ public class PlayerPlatform : MonoBehaviour
 {
     private GameObject currentOneWayPlatform;
 
-    [SerializeField] private BoxCollider2D playerCollider;
+    [SerializeField] private PolygonCollider2D playerCollider;
 
     // Update is called once per frame
     void Update()

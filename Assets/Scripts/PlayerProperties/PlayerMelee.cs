@@ -25,9 +25,9 @@ public class PlayerMelee : MonoBehaviour
         attackAreaD = transform.GetChild(2).gameObject; // Down hitbox must be 2nd
         attackAreaU = transform.GetChild(3).gameObject; // Up hitbox must be 3rd
 
-        attackAreaF.transform.localPosition = new Vector3(1.33f, 0, 0);
-        attackAreaD.transform.localPosition = new Vector3(0, -1.33f, 0);
-        attackAreaU.transform.localPosition = new Vector3(0, 1.33f, 0);
+        attackAreaF.transform.localPosition = new Vector3(2.72f, 0, 0);
+        attackAreaD.transform.localPosition = new Vector3(0, -2.72f, 0);
+        attackAreaU.transform.localPosition = new Vector3(0, 2.72f, 0);
 
     }
 
@@ -42,7 +42,7 @@ public class PlayerMelee : MonoBehaviour
         }
 
         // Down attack
-        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") < 0 && !gameObject.GetComponent<PlayerMovement>().isGrounded())
+        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") < 0 && !gameObject.GetComponent<PlayerMovement>().isGrounded() && !gameObject.GetComponent<PlayerMovement>().isGroundedPlatform())
         {
             AttackD();
         }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -16,9 +15,12 @@ public class PlayerMovement : MonoBehaviour
     public bool cantMove = false;
     public float gravity;
 
+    public Animator animator;
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask platformLayer;
 
     // private AudioSource aud;
 
@@ -32,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // If grounded, reset the canDodge variable
-        if (isGrounded())
+        if (isGrounded() && isGroundedPlatform())
         {
             canDodge = true;
         }
@@ -46,40 +48,33 @@ public class PlayerMovement : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal"); // getting from input
         vertical = Input.GetAxisRaw("Vertical");
 
-
-        // OLD JUMP Mechanic (Maybe still want to use this?)
-        /*
-        // getbuttondown --> check if button is held (basically full hop)
-        if(Input.GetButtonDown("Jump")) //  && isGrounded()
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + jumpingPower);
-            canDodge = true;
-            
-            //if(!aud.isPlaying)
-            //{
-            //    aud.Play();
-            //}
-        }
-
-        // getbuttonup --> check for button is tapped (short hop), basically if only tap, the above one got halfed
-        if(Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-            canDodge = true;
-        }
-        */
+        animator.SetFloat("Speed", Mathf.Abs(horizontal));
+        animator.SetFloat("YSpeed", rb.velocity.y);
 
         // New Jump mechanic (No short hop / long hop)
-        if (Input.GetButtonDown("Jump")) //  && isGrounded()
+        if (Input.GetButtonDown("Jump"))
         {
+            animator.SetBool("IsJumping", true);
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
             canDodge = true;
+
+            if (!isGrounded() && !isGroundedPlatform())
+            {
+                animator.SetBool("IsMidairJumping", true);
+            }
         }
 
         // Air Dodge
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isGrounded() && canDodge)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isGrounded() && !isGroundedPlatform() && canDodge)
         {
             StartCoroutine(airDodge());
+        }
+
+        if(rb.velocity.y == 0 && (isGrounded() || isGroundedPlatform()))
+        {
+            Debug.Log("gaming");
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsMidairJumping", false);
         }
 
         // Check if need to flip every frame
@@ -98,11 +93,24 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
 
     }
+    /*
+    public void OnLanding()
+    {
+        animator.SetBool("IsJumping", false);
+        animator.SetBool("IsMidairJumping", false);
+    }
+    */
 
     public bool isGrounded()
     {
         // return if groundCheck.position overlap within 0.2f radius to groundLayer
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+
+    public bool isGroundedPlatform()
+    {
+        // return if groundCheck.position overlap within 0.2f radius to groundLayer
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, platformLayer);
     }
 
     private void Flip()

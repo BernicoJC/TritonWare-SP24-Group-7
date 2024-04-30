@@ -10,10 +10,13 @@ public class PlayerInvincible : MonoBehaviour
     private int LayerDefault;
     private int LayerInvincible;
 
+    public Animator animator;
+
     public void Start()
     {
         LayerDefault = LayerMask.NameToLayer("Default");
         LayerInvincible = LayerMask.NameToLayer("Invincible");
+        animator = GetComponent<Animator>();
     }
     public void applyInvincibility()
     {
@@ -28,6 +31,8 @@ public class PlayerInvincible : MonoBehaviour
         gameObject.GetComponent<PlayerMovement>().cantMove = true;
 
         gameObject.layer = LayerInvincible;
+
+        animator.SetTrigger("Hurt");
 
         yield return new WaitForSeconds(damagedTime);
 

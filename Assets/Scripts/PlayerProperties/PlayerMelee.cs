@@ -17,6 +17,8 @@ public class PlayerMelee : MonoBehaviour
     private float timeToAttack;
     private float timer = 0;
 
+    public Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,28 +31,30 @@ public class PlayerMelee : MonoBehaviour
         attackAreaD.transform.localPosition = new Vector3(0, -2.72f, 0);
         attackAreaU.transform.localPosition = new Vector3(0, 2.72f, 0);
 
+        animator =  GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
         // Up attack
-        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") > 0)
+        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") > 0 && gameObject.GetComponent<PlayerMovement>().cantMove == false)
         {
             AttackU();
-            
+            animator.SetTrigger("UpAttack");
         }
 
         // Down attack
-        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") < 0 && !gameObject.GetComponent<PlayerMovement>().isGrounded() && !gameObject.GetComponent<PlayerMovement>().isGroundedPlatform())
+        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") < 0 && !gameObject.GetComponent<PlayerMovement>().isGrounded() && !gameObject.GetComponent<PlayerMovement>().isGroundedPlatform() && gameObject.GetComponent<PlayerMovement>().cantMove == false)
         {
             AttackD();
         }
 
         // Forward attack
-        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") == 0)
+        if (Input.GetKeyDown(KeyCode.X) && !attacking && Input.GetAxisRaw("Vertical") == 0 && gameObject.GetComponent<PlayerMovement>().cantMove == false)
         {
             AttackF();
+            animator.SetTrigger("SideAttack");
         }
 
         if(attacking)

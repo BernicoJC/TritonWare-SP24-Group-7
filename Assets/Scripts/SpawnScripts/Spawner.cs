@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Spawner : MonoBehaviour
 {
     public List<Enemy> enemies = new List<Enemy>();
     public List<Transform> spawnLocations = new List<Transform>();
+
+    public GameObject Boss;
+
     public int currentWave;
     public int waveValue;
     public float spawnTimer;
     private float timer;
+
+    public int maxWave;
 
     public List<GameObject> enemiesToSpawn = new List<GameObject>();
     public List<Transform> chosenLocations = new List<Transform>();
@@ -63,12 +69,25 @@ public class Spawner : MonoBehaviour
     public void GenerateWave()
     {
         waveValue = currentWave;
-        GenerateEnemies();
+        if(currentWave <= maxWave)
+        {
+            GenerateEnemies();
+        }
+
+        if(currentWave == maxWave + 1)
+        {
+            GenerateBossWave();
+        }
+
+        if (currentWave == maxWave + 2)
+        {
+            SceneManager.LoadScene("Win");
+        }
     }
 
     public void GenerateEnemies()
     {
-        List<GameObject> generatedEnemies = new List<GameObject> ();
+        List<GameObject> generatedEnemies = new List<GameObject>();
         List<Transform> tempLocations = new List<Transform>();
 
         // So it doesn't affect the actual list, but also doesn't double spawn
@@ -80,10 +99,10 @@ public class Spawner : MonoBehaviour
             int randEnemyId = Random.Range(0, enemies.Count);
             int randEnemyCost = enemies[randEnemyId].cost;
 
-            int randLocationId = Random.Range (0, tempCopyofSpawnLocations.Count);
+            int randLocationId = Random.Range(0, tempCopyofSpawnLocations.Count);
 
             // If can still add more, add to the list of enemies to generate, then reduce the available value
-            if(waveValue - randEnemyCost >= 0)
+            if (waveValue - randEnemyCost >= 0)
             {
                 generatedEnemies.Add(enemies[randEnemyId].enemyPrefab);
                 waveValue -= randEnemyCost;
@@ -92,11 +111,25 @@ public class Spawner : MonoBehaviour
                 tempCopyofSpawnLocations.RemoveAt(randLocationId);
             }
 
-            else if(waveValue <= 0)
+            else if (waveValue <= 0)
             {
                 break;
             }
         }
+
+        enemiesToSpawn.Clear();
+        chosenLocations.Clear();
+        enemiesToSpawn = generatedEnemies;
+        chosenLocations = tempLocations;
+    }
+
+    public void GenerateBossWave()
+    {
+        List<GameObject> generatedEnemies = new List<GameObject>();
+        List<Transform> tempLocations = new List<Transform>();
+
+        generatedEnemies.Add(Boss);
+        tempLocations.Add(spawnLocations[0]);
 
         enemiesToSpawn.Clear();
         chosenLocations.Clear();

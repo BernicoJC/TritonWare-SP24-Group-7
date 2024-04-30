@@ -7,9 +7,11 @@ public class MonsterDamage : MonoBehaviour
 {
     public int contactDamage;
     private GameObject player;
-    private Health playerHealth; // It seems using class in this way is importing from other script (just like Java)
-    private PlayerInvincible playerInvincible;
+    public Health playerHealth; // It seems using class in this way is importing from other script (just like Java)
+    public PlayerInvincible playerInvincible;
     public bool kamikaze;
+
+    public string movementScript;
 
     private void Start()
     {
@@ -22,6 +24,8 @@ public class MonsterDamage : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
+
+
             playerInvincible.applyInvincibility();
             playerHealth.takeDamage(contactDamage);
 

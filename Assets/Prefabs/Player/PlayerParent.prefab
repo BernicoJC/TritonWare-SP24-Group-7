@@ -151,8 +151,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4221080312782894125, guid: a7ee9b575a34d36438bf2acfc1537537, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1394557976455000503}
   m_SourcePrefab: {fileID: 100100000, guid: a7ee9b575a34d36438bf2acfc1537537, type: 3}
+--- !u!1 &771470839353678204 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4221080312782894125, guid: a7ee9b575a34d36438bf2acfc1537537, type: 3}
+  m_PrefabInstance: {fileID: 3467941631476247889}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1394557976455000503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771470839353678204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30da61669f5ab644da004154a150ce93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathAnimationLength: 0
 --- !u!60 &6944657585987062777 stripped
 PolygonCollider2D:
   m_CorrespondingSourceObject: {fileID: 5782898781688506024, guid: a7ee9b575a34d36438bf2acfc1537537, type: 3}

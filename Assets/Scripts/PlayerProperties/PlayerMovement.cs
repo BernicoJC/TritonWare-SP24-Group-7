@@ -72,7 +72,6 @@ public class PlayerMovement : MonoBehaviour
 
         if(rb.velocity.y == 0 && (isGrounded() || isGroundedPlatform()))
         {
-            Debug.Log("gaming");
             animator.SetBool("IsJumping", false);
             animator.SetBool("IsMidairJumping", false);
         }

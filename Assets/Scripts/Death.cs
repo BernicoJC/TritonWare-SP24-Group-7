@@ -15,8 +15,11 @@ public class Death : MonoBehaviour
     }
     public void kill()
     {
-        animator.SetTrigger("Death");
-        //Destroy(rb);
+        if(animator != null)
+        {
+            animator.SetTrigger("Death");
+        }
+        GetComponent<Collider2D>().enabled = false;
         Destroy(transform.parent.gameObject, deathAnimationLength);
     }
 }

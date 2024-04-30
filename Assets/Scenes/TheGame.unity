@@ -2522,8 +2522,13 @@ GameObject:
   m_Component:
   - component: {fileID: 2042645362}
   - component: {fileID: 2042645365}
-  - component: {fileID: 2042645366}
+  - component: {fileID: 2042645371}
+  - component: {fileID: 2042645370}
   - component: {fileID: 2042645364}
+  - component: {fileID: 2042645369}
+  - component: {fileID: 2042645368}
+  - component: {fileID: 2042645367}
+  - component: {fileID: 2042645366}
   - component: {fileID: 2042645363}
   m_Layer: 0
   m_Name: Triangle
@@ -2661,6 +2666,73 @@ MonoBehaviour:
   knockbackStrength: 2
   damage: 1
   x: 0
+--- !u!114 &2042645367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042645361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5ae43895cff2aa4784866800024d705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contactDamage: 0
+  kamikaze: 0
+--- !u!114 &2042645368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042645361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6de6dbeaceadbe4190c7ae84ae6b16a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resilienceModifier: 1
+  rb: {fileID: 0}
+--- !u!114 &2042645369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042645361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39363ff57c49c1c49961fa9855506a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2042645370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042645361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30da61669f5ab644da004154a150ce93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathAnimationLength: 0
+--- !u!114 &2042645371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042645361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f183b4c1fa2088042a0bc8926b725687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5
+  health: 0
 --- !u!1 &2055400656
 GameObject:
   m_ObjectHideFlags: 3

@@ -128,6 +128,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator airDodge()
     {
+        animator.SetTrigger("Dash");
         canDodge = false;
         // This variable is important so that you can't move while dodging
         cantMove = true;

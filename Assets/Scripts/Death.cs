@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Death : MonoBehaviour
 {
@@ -18,6 +19,11 @@ public class Death : MonoBehaviour
         if(animator != null)
         {
             animator.SetTrigger("Death");
+        }
+
+        if (gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene("GameOver");
         }
         GetComponent<Collider2D>().enabled = false;
         Destroy(transform.parent.gameObject, deathAnimationLength);

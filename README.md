@@ -16,7 +16,7 @@ This is a 2-D platformer combat-based game made in Unity. It consists of multipl
 `Right: → Right Arrow`  
 `Jump: ⎵ Spacebar (You get unlimited jumps!)`  
 `Fall Through: ↓ Down Arrow`  
-`Attack: <attackKey>`  
+`Attack: x`  
 `Dodge: ⇧ Shift`  
   
 To move around, use the left and right arrow keys. The Spacebar is used to jump, and keep in mind that our game gives you unlimited jumps! The player attacks by flicking its tongue (since it is a frog, if you did not connect the two dots already). Pressing the down key can allow you to drop through a platform to a lower one or the ground if you were already standing on one. Dodging allows you to move quickly for a very brief period of time while already moving in the left or right direction. This can come especially in handy in close situations. 

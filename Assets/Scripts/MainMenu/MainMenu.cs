@@ -19,4 +19,9 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
+
+    public void PlayCredit()
+    {
+        SceneManager.LoadScene("Credit");
+    }
 }

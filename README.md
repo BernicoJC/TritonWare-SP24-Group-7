@@ -1,5 +1,5 @@
 # TritonWare-SP24-Group-7
-The repo for TritonWare Spring 2024 Group 7's submission, Spaceium.
+The repo for TritonWare Spring 2024 Group 7's submission, Spaceum. [Link to the itch page](https://sharkron.itch.io/spaceum)
 
 ### Team  
 Bernico Jansen Chandra (Sharkron): Programming  
